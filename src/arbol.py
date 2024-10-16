@@ -70,25 +70,36 @@ class Arbol:
         altura_der = self.altura(nodo.enl_der)
         return max(altura_izq, altura_der) + 1  
 
-    def prof(self, nodo):
-
+    def prof(self, nodo, valor):
         if nodo is None:
-            return 0 
-        return 1 + max(self.prof(nodo.enl_izq), self.prof(nodo.enl_der))
+            return -1 
+        if nodo.valor == valor:
+            return 0  
+        elif valor < nodo.valor and nodo.enl_izq:
+            profundidad_izq = self.prof(nodo.enl_izq, valor)
+            if profundidad_izq != -1:
+                return profundidad_izq + 1
+        elif valor > nodo.valor and nodo.enl_der:
+            profundidad_der = self.prof(nodo.enl_der, valor)
+            if profundidad_der != -1:
+                return profundidad_der + 1
+        return -1
 
-    def nivel(self, nodo):
-        return self.prof(nodo) 
+    def nivel(self, valor):
+        return self.prof(self.raiz, valor)
     
 if __name__ == "__main__":
     arbol = Arbol()
-    valores=[50,30,80,18,15,45,55,22,27,90,88,77]
+    valores = [50, 30, 80, 18, 15, 45, 55, 22, 27, 90, 88, 77]
+    
     for v in valores:
         arbol.insrt(v)
-        print("recorrido en pre-orden:",arbol.Preorden())
-        print("recorrido en in-orden:",arbol.Inorden())
-        print("recorrido en post-orden:",arbol.Postorden())
-        print("altura:",arbol.altura(arbol.raiz))
-        print("profundidad:",arbol.prof(arbol.raiz))
-        print("nivel:",arbol.nivel(arbol.raiz))
-        print("-" * 55)
     
+    print("Recorrido en pre-orden:", arbol.Preorden())
+    print("Recorrido en in-orden:", arbol.Inorden())
+    print("Recorrido en post-orden:", arbol.Postorden())
+    print("Altura del árbol:", arbol.altura(arbol.raiz))
+    
+    valor_buscado = 55
+    print(f"Profundidad del nodo con valor {valor_buscado}:", arbol.prof(arbol.raiz, valor_buscado))
+    print(f"Nivel del nodo con valor {valor_buscado}:", arbol.nivel(valor_buscado))
