@@ -63,20 +63,21 @@ class Arbol:
             res.append(nodo.valor)
         return res
     
-    def altura(self,nodo):
+    def altura(self, nodo):
         if nodo is None:
-            return 0
-        else:
-            return 1+max(self.altura(nodo.enl_izq),self.altura(nodo.enl_der))  
-    
-    def prof(self, nodo,profNodo=0):
+            return -1  
+        altura_izq = self.altura(nodo.enl_izq)
+        altura_der = self.altura(nodo.enl_der)
+        return max(altura_izq, altura_der) + 1  
+
+    def prof(self, nodo):
+
         if nodo is None:
-            return -1
-        if self.raiz == nodo:    
-            return profNodo
-        
+            return 0 
+        return 1 + max(self.prof(nodo.enl_izq), self.prof(nodo.enl_der))
+
     def nivel(self, nodo):
-        return self.prof(nodo)
+        return self.prof(nodo) 
     
 if __name__ == "__main__":
     arbol = Arbol()
@@ -89,4 +90,5 @@ if __name__ == "__main__":
         print("altura:",arbol.altura(arbol.raiz))
         print("profundidad:",arbol.prof(arbol.raiz))
         print("nivel:",arbol.nivel(arbol.raiz))
+        print("-" * 55)
     
